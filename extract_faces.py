@@ -10,11 +10,11 @@ from urllib2 import urlopen
 # CONSTANTS
 
 # URL for the Experimental Psychology website
-EPURL = "http://www.psy.ox.ac.uk/team"
+EPURL = u"http://www.psy.ox.ac.uk/team"
 
 # Name for the folder in which face images need to be stored
 DIR = os.path.dirname(os.path.abspath(__file__))
-FACEDIR = os.path.join(DIR, 'scraped_faces')
+FACEDIR = os.path.join(DIR, u'scraped_faces')
 
 
 # # # # #
@@ -25,9 +25,11 @@ if not os.path.isdir(FACEDIR):
 	os.mkdir(FACEDIR)
 
 # Read the EP website.
-print("Reading '%s'" % EPURL)
+print(u"Reading '%s'" % EPURL)
 resp = urlopen(EPURL)
 html = resp.read()
+# Unicodify the loaded html text.
+html = html.decode(u'utf-8')
 
 
 # # # # #
@@ -35,7 +37,7 @@ html = resp.read()
 
 # Try to detect all the names from the website's HTML code.
 # First, we split the html in separate lines.
-lines = html.split('\n')
+lines = html.split(u'\n')
 
 # Then we go through all the lines, trying to find the things that typically
 # signal a link to a face image. Links to personal profiles occur in the
@@ -51,8 +53,8 @@ lines = html.split('\n')
 # Then, we simply select the bit between these two snippets, which should be
 # 'firstname-lastname/'.
 names = []
-imgurlstart = '<img data-src="http://www.psy.ox.ac.uk/team/'
-imgurlend = '/@@images/image/64x64'
+imgurlstart = u'<img data-src="http://www.psy.ox.ac.uk/team/'
+imgurlend = u'/@@images/image/64x64'
 for l in lines:
 	if imgurlstart in l and imgurlend in l:
 		si = l.find(imgurlstart) + len(imgurlstart)
@@ -66,12 +68,12 @@ for l in lines:
 # Each photo's URL is a reference to the personal image that contains the
 # employee's name. This is the generic format:
 # 'http://www.psy.ox.ac.uk/team/firstname-lastname/@@images/image/'
-imgurl = 'http://www.psy.ox.ac.uk/team/%s/@@images/image/'
+imgurl = u'http://www.psy.ox.ac.uk/team/%s/@@images/image/'
 
 # To scrape all the images, we'll go through all the names, construct the URL
 # for the image, and attempt to retrieve the image via the URL.
-print("Retrieving %d face images." % len(names))
+print(u"Retrieving %d face images." % (len(names)))
 for name in names:
-	urlretrieve(imgurl % name, os.path.join(FACEDIR, '%s.jpg' % name))
+	urlretrieve(imgurl % (name), os.path.join(FACEDIR, u'%s.jpg' % (name)))
 
-print("Done! Scraped images are now in ''." % FACEDIR)
+print(u"Done! Scraped images are now in '%s'." % (FACEDIR))

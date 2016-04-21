@@ -17,11 +17,11 @@ OUTHEIGHT = 300
 
 # Name for the folder in which face images need to be stored
 DIR = os.path.dirname(os.path.abspath(__file__))
-FACEDIR = os.path.join(DIR, 'scraped_faces')
-DETECTDIR = os.path.join(DIR, 'detected_faces')
+FACEDIR = os.path.join(DIR, u'scraped_faces')
+DETECTDIR = os.path.join(DIR, u'detected_faces')
 
 # Path to the Haar Cascade file.
-CASCPATH = os.path.join(DIR, 'haarcascade_frontalface_default.xml')
+CASCPATH = os.path.join(DIR, u'haarcascade_frontalface_default.xml')
 
 
 # # # # #
@@ -29,7 +29,7 @@ CASCPATH = os.path.join(DIR, 'haarcascade_frontalface_default.xml')
 
 # Check if the source directory exists, and raise an Exception if it doesn't.
 if not os.path.isdir(FACEDIR):
-	raise Exception("ERROR! Source directory does not exist. Expected to find '%s'" % FACEDIR)
+	raise Exception(u"ERROR! Source directory does not exist. Expected to find '%s'" % (FACEDIR))
 
 # Check if the face directory already exists, and make a new one if it doesn't.
 if not os.path.isdir(DETECTDIR):
@@ -50,7 +50,7 @@ face_cascade = cv2.CascadeClassifier(CASCPATH)
 
 # Loop through all the image files.
 imgnames = os.listdir(FACEDIR)
-print("Found %d source images." % len(imgnames))
+print(u"Found %d source images." % (len(imgnames)))
 
 # Loop through all the image files.
 for imgname in imgnames:
@@ -66,7 +66,7 @@ for imgname in imgnames:
 		grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 	except:
 		# Print a warning, and skip further processing of this image.
-		print("WARNING! Could not process image '%s'" % imgname)
+		print(u"WARNING! Could not process image '%s'." % (imgname))
 		continue
 	
 	# Optionally rescale the image.
@@ -91,7 +91,7 @@ for imgname in imgnames:
 		x, y, w, h = faces[i]
 		# Construct a name and a path for the cropped face image.
 		name, ext = os.path.splitext(imgname)
-		facepath = os.path.join(DETECTDIR, '%s-%d%s' % (name, i, ext))
+		facepath = os.path.join(DETECTDIR, u'%s-%d%s' % (name, i, ext))
 		# Crop the face's part of the image.
 		crop = grey[y: y + h, x: x + w]
 		# Rescale the cropped image to the preferred output size.
@@ -102,4 +102,4 @@ for imgname in imgnames:
 		# Store the face as a new image.
 		cv2.imwrite(facepath, crop)
 
-print("Detected %d faces!" % len(os.listdir(DETECTDIR)))
+print(u"Detected %d faces!" % (len(os.listdir(DETECTDIR))))

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 import numpy
@@ -12,8 +14,8 @@ IMGSIZE = (600, 600)
 
 # Name for the folder in which face images are stored.
 DIR = os.path.dirname(os.path.abspath(__file__))
-FACEDIR = os.path.join(DIR, 'filtered_faces')
-OUTFILE = os.path.join(DIR, 'EP_average_face.jpg')
+FACEDIR = os.path.join(DIR, u'filtered_faces')
+OUTFILE = os.path.join(DIR, u'EP_average_face.jpg')
 
 
 # # # # #
@@ -27,6 +29,7 @@ imgmatshape = (IMGSIZE[1], IMGSIZE[0], len(imgnames))
 imgmat = numpy.zeros(imgmatshape)
 
 # Loop through all images, and load them into the image matrix.
+print(u"Loading %d faces." % (len(imgnames)))
 for i in range(len(imgnames)):
 	# Load the image.
 	img = imread(os.path.join(FACEDIR, imgnames[i]))
@@ -35,8 +38,9 @@ for i in range(len(imgnames)):
 	# Store a copy of the image in the image matrix.
 	imgmat[:,:,i] = numpy.copy(img)
 
+print("Averaging %d faces, and storing the result as '%s'" % (len(imgnames), OUTFILE))
+
 # Average all the faces.
 avgimg = numpy.mean(imgmat, axis=2)
-
 # Save the image.
 imsave(OUTFILE, avgimg)
