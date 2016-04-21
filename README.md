@@ -1,5 +1,5 @@
 Oxford Experimental Psychology Face-Average-O-Matic
-===================================================
+---------------------------------------------------
 
 This is a bunch of simple scripts that scrape the Oxford
 Experimental Psychology [website](http://www.psy.ox.ac.uk/team) for people's personal photos.
@@ -36,7 +36,7 @@ image, and that it can make mistakes every now and again. The
 detected faces are cropped, and the resulting images are stored
 in a folder called `detected_faces`.
 
-3) **Manually check the faces**. This step is a manual one, because
+3) Manually check the faces. This step is a manual one, because
 humans are waaaaaaay better at detecting faces than computers
 are. **Create a folder called `filtered_faces`, and copy all the
 images from `detected_faces` that actually contain a face**.
